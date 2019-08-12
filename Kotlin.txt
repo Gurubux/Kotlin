@@ -14,117 +14,893 @@ STARTING UP WITH KOTLIN
 From Java to Kotlin
 Introducing Kotlin to an existing project
 "Hello, world" example
+--------------------------------------------------------------------------------------------------
 Variables
+	var string = 1
+    //string = "abc" //Error:(4, 14) Kotlin: Type mismatch: inferred type is String but Int was expected
 
+    val list = listOf("Java")
+    // list.add("Kotlin") //Error:(8, 10) Kotlin: Unresolved reference: add
+
+    val mutableList = mutableListOf("Java")
+    mutableList.add("Kotlin")
+    println(mutableList) //[Java, Kotlin]
+
+--------------------------------------------------------------------------------------------------
 Functions
+
+	fun max(a:Int, b:Int): Int {
+        return if(a > b) a else b
+    }
+    //Function to Expression body
+	fun max2(a:Int, b:Int): Int = if(a > b) a else b
+----------------------------------------
+Note that if you try to omit the type for a function with expression body, it will mean that this function returns 'Unit'. You can think of 'Unit' as an analogue of 'void'. The ‘dispayMax’ function returns no meaningful value, it’s written for its side effects, and the compiler considers its type as ‘Unit’. You can use an alternative syntactic form by specifying 'Unit' explicitly, but I think no one does that.
+-------------------- --------------------   
+    //Function returning Unit
+    fun displayMax(a:Int, b:Int) = if(a > b) println(a) else println(a)
+    fun displayMax(a:Int, b:Int): Unit = if(a > b) println(a) else println(a)
+    displayMax(-1,0)
+
+    //Function Everywhere
+    // Top-level
+    // In a class
+    // In a function
+----------------------------------------
+Is it possible to call a top-level function from Java? If yes, how?
+-You can’t call it from Java
+
+-You call it as a static function of the Class, which name corresponds to the file name
+CORRECT 
+
+-You call it as a member function of the Class, which name corresponds to the file name
+----------------------------------------
+
+Extensions.kt
+@file:JvmName("Util")
+package intro
+fun foo() = 0
+
+JavaUsage.java
+package other;
+import intro.Util;
+public class JavaUsage{
+	public static void main(String[] args)
+	{
+		int i = Util.foo();
+	}
+}
+--------------------------------------------------------------------------------------------------
 Named & default arguments
+	println(listOf('a', 'b', 'c').joinToString(separator = "", prefix = "(", postfix = ")"))//(abc)
+	
+    println(listOf(1,2,3).joinToString(postfix = ".")) //1, 2, 3.
+---------------------------------------
+Looking at the output, we can understand that the default separator is comma, and an empty string is used by default as 'prefix'. You dont have to specify the values for all arguments each time. You can change the defaults, only if needed.
+---------------------------------------
+    fun displaySeperator(character: Char = '*', size: Int = 10){
+        repeat(size){
+            print(character)
+        }
+    }
+
+    displaySeperator() //**********
+    displaySeperator(size = 5) //*****
+    displaySeperator('#') //##########
+    displaySeperator('5', 3) //555
+	displaySeperator(3, '5') //the code won’t compile
+---------------------------------------
+There is the direct correspondence between unnamed arguments and parameters.
+No implicit conversions for Char to Int
+This Default arguments feature avoids the need for Overloading(like in java) for different functionalities
+2^3 = 8 combinations
+
+@JvmOverloads
+Only 4 possible
+
+--------------------------------------------------------------------------------------------------
 Conditionals: if & when
+
+"if" is an expression
+NO Ternary
+    val max = if(a > b) a else b
+
+
+"when" as switch
+	enum class Color{
+    	BLUE,ORANGE,RED
+	}
+	fun getDescription(color: Color) = when (color){
+            BLUE -> println("cold")
+            RED -> println("hot")
+        else -> println("Mild")
+    }
+
+    getDescription(ORANGE)//Mild	
+
+"when" for checking values
+	fun respondToInput(input : String) = when(input){
+        "y","yes" -> println("I am glad you Agree!")
+        "n","no" -> println("Sorry to hear that")
+        else -> println("I dont understand you!")
+    }
+
+    respondToInput("y")// I am glad you Agree!
+    respondToInput("Yes")// I dont understand you!
+    respondToInput("yes")// I am glad you Agree!
+    respondToInput("no")// Sorry to hear that
+
+Any expression can be used as a branch condition
+We use sets here to ignore the order of the colors. If one of the branch condition is satisfied, return the corresponding result, the color after mix.
+    fun mix(c1: Color,c2: Color) =
+        when(setOf(c1,c2)){
+            setOf(RED,YELLOW) -> ORANGE
+            setOf(BLUE,YELLOW) -> GREEN
+            setOf(BLUE,VIOLET) -> INDIGO
+            else -> throw Exception("Dirty Color")
+        }
+
+
+Checking Types - SMART Cast - instaceOf() in java
+	when(pet){
+		is Cat -> pet.meow()
+		is Dog -> pet.woof()
+	}
+--------------------------------------------------------------------------------------------------
 Loops
+//######## LOOPS #########
+    //Iterating over Maps
+    println("Iterating over Maps")
+    val map = mapOf(1 to "One",2 to "Two",3 to "Three")
+    for((key,value) in map){
+        println("$key = $value")
+    }
+
+    //Iterating with Index
+    println("Iterating with Index")
+    val list = listOf("a","b","c")
+    for((i,ele) in list.withIndex()){
+        println("$i = $ele")
+    }
+
+    //Iterating over range
+    for(i in 1..9)
+        print(i)//123456789
+    //Iterating over range - untill
+    for(i in 1 until 9)
+        print(i)//12345678
+
+    for(ch in "abc")
+        print(ch+1)//bcd
+
+
+
+--------------------------------------------------------------------------------------------------
 'in' checks & ranges
+
+    //######## 'IN' CHECKS & RANGES #########
+    // 1. For Iteration
+    for(i in 'a'..'z'){
+        print(i)
+    }
+    println()
+    // 2. Check for belonging
+    val c ='B'
+    if(c in 'a'..'z') println("$c exists") else println("$c DOES NOT exists")
+
+    fun isLetter(c: Char) = c in 'a'..'z' || c in 'A'..'Z'
+    println(isLetter('G'))//true
+    println(isLetter('@'))//functionalities
+
+
+    //in as when
+    fun recognize(c: Char) = when (c){
+        in '0'..'9' ->"$c It's a digit"
+        in 'a'..'z',in 'A'..'Z' ->"$c It's a letter"
+        else -> "$c Dont Know"
+    }
+    println(recognize('X'))
+    println(recognize('2'))
+    println(recognize('!'))
+
+
+Strings are comparative lexicographically by default or in other words by the alphabetical order. That means, we compare the first letters big errors after a and only if they are the same, we compare the rest letters, first the second ones, then third ones et cetera. Thus ball goes up to a but before k.    
+    //range of strings
+    println("Kotlin" in "Java".."Scala")//true
+    println("Kotlin" in setOf("Java", "Scala"))//false
+
+    class MyDate : Comparable<MyDate>
+
+    if(myDate.compareTo(startDate) >= 0 && myDate.compareTo(endDate) <= 0)
+    {
+
+    }
+    if(myDate >= startDate  && myDate  <=  endDate)
+    {
+    	
+    }
+    if(myDate in startDate..endDate)
+    {
+    	
+    }
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Checking identifier
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Exceptions
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Extension Functions
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Examples from the Standard Library
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Sum as an extension function
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Calling Extensions
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Importance of extensions
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Reading: Setting up programming assignments
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Mastermind in a functional style
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Mastermind
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Checking identifier
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Sum as an extension function
 
 
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Graded: Mastermind game
 
 -----------------------------------------------------------------------------
-NULLABILITY, FUNCTIONAL PROGRAMMING
-------------------------------------------------------------------------------- 3
+3. NULLABILITY, FUNCTIONAL PROGRAMMING
+-------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 Nullable types
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Nullable types under the hood
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Checking whether string is null or empty
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Safe casts
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Safe casts
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Importance of nullability
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Lambdas
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Common Operations on collections
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Operations Quiz - I
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Operations Quiz - II
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Interchangeable predicates
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Function Types
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Member References
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 return from Lambda
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Is Kotlin a functional language?
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Reading: Mastermind in a functional style
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Nice String
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Taxi Park, tasks 1-3
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Taxi Park, tasks 4 & 5
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Taxi Park. Pareto Principle task
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Taxi Park, task 6
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Checking whether string is null or empty
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Safe casts
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Interchangeable predicates
+
+
+
+
+
+
 
 
 Graded: Nice String
 Graded: Taxi Park
 -----------------------------------------------------------------------------
-PROPERTIES, OOP, CONVENTIONS
-------------------------------------------------------------------------------- 4
+4. PROPERTIES, OOP, CONVENTIONS
+------------------------------------------------------------------------------- 
 
+--------------------------------------------------------------------------------------------------
 Properties
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Unstable val
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 More about Properties
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Lazy or late initialization
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Using lateinit property
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 OOP in Kotlin
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Constructors, Inheritance syntax
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: NPE during initialization
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Class modifiers - I
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Class modifiers - II
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Objects, object expressions & companion objects
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Constants
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Generics
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 OOP design choices
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Operator Overloading
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Conventions
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Equality
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 (Not)using operator overloading
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Rationals
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Unstable val
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Using lateinit property
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: NPE during initialization
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Equality
+
+
+
+
+
 
 
 Graded: Rationals
 Graded: Board
 -----------------------------------------------------------------------------
-SEQUENCES, LAMBDAS WITH RECEIVER, TYPES
+5. SEQUENCES, LAMBDAS WITH RECEIVER, TYPES
 ------------------------------------------------------------------------------- 5
 
+--------------------------------------------------------------------------------------------------
 Library functions looking like built-in constructs
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 The power of inline
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Inlining of the 'filter' function
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Inline or not inline?..
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Collections vs Sequences
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 More about Sequences
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Creating Sequences
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Library Functions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Fibonacci sequence
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Lambda with receiver
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 More useful library functions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Working with auxiliary functions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Ungraded Plugin: Kotlin Playground: Member extensions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Basic types
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Kotlin type hierarchy
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Nullable Types
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Collection types
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Inlining of the 'filter' function
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Fibonacci sequence
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Working with auxiliary functions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Solution: Member extensions
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Conclusion
 
 
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
 Graded: Game 2048 & Game of Fifteen
