@@ -1,0 +1,130 @@
+--------------------------------------------------------------------------------------------------
+INTRODUCTION
+--------------------------------------------------------------------------------------------------
+Introduction to the course
+What is Kotlin?
+History of Kotlin
+Developing Kotlin
+
+
+--------------------------------------------------------------------------------------------------
+STARTING UP WITH KOTLIN
+--------------------------------------------------------------------------------------------------
+
+From Java to Kotlin
+Introducing Kotlin to an existing project
+"Hello, world" example
+Variables
+
+Functions
+Named & default arguments
+Conditionals: if & when
+Loops
+'in' checks & ranges
+Ungraded Plugin: Kotlin Playground: Checking identifier
+Exceptions
+Extension Functions
+Examples from the Standard Library
+Ungraded Plugin: Kotlin Playground: Sum as an extension function
+Calling Extensions
+Importance of extensions
+Reading: Setting up programming assignments
+Ungraded Plugin: Kotlin Playground: Mastermind in a functional style
+Solution: Mastermind
+Solution: Checking identifier
+Solution: Sum as an extension function
+
+
+Graded: Mastermind game
+
+-----------------------------------------------------------------------------
+NULLABILITY, FUNCTIONAL PROGRAMMING
+------------------------------------------------------------------------------- 3
+Nullable types
+Nullable types under the hood
+Ungraded Plugin: Kotlin Playground: Checking whether string is null or empty
+Safe casts
+Ungraded Plugin: Kotlin Playground: Safe casts
+Importance of nullability
+Lambdas
+Common Operations on collections
+Operations Quiz - I
+Operations Quiz - II
+Ungraded Plugin: Kotlin Playground: Interchangeable predicates
+Function Types
+Member References
+return from Lambda
+Is Kotlin a functional language?
+Reading: Mastermind in a functional style
+Solution: Nice String
+Solution: Taxi Park, tasks 1-3
+Solution: Taxi Park, tasks 4 & 5
+Ungraded Plugin: Taxi Park. Pareto Principle task
+Solution: Taxi Park, task 6
+Solution: Checking whether string is null or empty
+Solution: Safe casts
+Solution: Interchangeable predicates
+
+
+Graded: Nice String
+Graded: Taxi Park
+-----------------------------------------------------------------------------
+PROPERTIES, OOP, CONVENTIONS
+------------------------------------------------------------------------------- 4
+
+Properties
+Ungraded Plugin: Kotlin Playground: Unstable val
+More about Properties
+Lazy or late initialization
+Ungraded Plugin: Kotlin Playground: Using lateinit property
+OOP in Kotlin
+Constructors, Inheritance syntax
+Ungraded Plugin: Kotlin Playground: NPE during initialization
+Class modifiers - I
+Class modifiers - II
+Objects, object expressions & companion objects
+Constants
+Generics
+OOP design choices
+Operator Overloading
+Conventions
+Ungraded Plugin: Kotlin Playground: Equality
+(Not)using operator overloading
+Solution: Rationals
+Solution: Unstable val
+Solution: Using lateinit property
+Solution: NPE during initialization
+Solution: Equality
+
+
+Graded: Rationals
+Graded: Board
+-----------------------------------------------------------------------------
+SEQUENCES, LAMBDAS WITH RECEIVER, TYPES
+------------------------------------------------------------------------------- 5
+
+Library functions looking like built-in constructs
+The power of inline
+Ungraded Plugin: Kotlin Playground: Inlining of the 'filter' function
+Inline or not inline?..
+Collections vs Sequences
+More about Sequences
+Creating Sequences
+Library Functions
+Ungraded Plugin: Kotlin Playground: Fibonacci sequence
+Lambda with receiver
+More useful library functions
+Ungraded Plugin: Kotlin Playground: Working with auxiliary functions
+Ungraded Plugin: Kotlin Playground: Member extensions
+Basic types
+Kotlin type hierarchy
+Nullable Types
+Collection types
+Solution: Inlining of the 'filter' function
+Solution: Fibonacci sequence
+Solution: Working with auxiliary functions
+Solution: Member extensions
+Conclusion
+
+
+Graded: Game 2048 & Game of Fifteen
